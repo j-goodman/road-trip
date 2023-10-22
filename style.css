@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Young+Serif&display=swap');
+
+body {
+    align-items: center;
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.game-name {
+    font-family: 'Young Serif', serif;
+    font-style: italic;
+    font-size: 1.5em;
+}
+
+.game-container, .how-to-play {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5em;
+    height: 100%;
+    justify-content: center;
+    margin-top: 32px;
+    width: 100%;
+}
+
+.how-to-play {
+    border: 3px solid rgba(255, 255, 255, .25);
+    padding: 32px;
+    margin-bottom: 16px;
+    width: 50%
+}
+
+.how-to-play .game-name {
+    margin-bottom: 24px;
+}
+
+.border-countries {
+    align-items: center;
+    background-color: rgba(0, 180, 208, .5);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 8px;
+    margin-top: 16px;
+    width: 40%;
+}
+
+.border-countries div {
+    border-radius: 4px;
+    margin: 8px;
+    padding: 8px;
+}
+
+.border-countries div:hover {
+    background-color: rgba(0, 180, 208, .5);
+    cursor: pointer;
+}
+
+.you-are-here {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 16px;
+}
+
+.flag {
+    font-size: 2em;
+}
+
+.extra-info {
+    margin-top: 32px;
+    font-size: .75em;
+    width: 40%;
+}
+
+@media screen and (max-width: 900px) {
+    .border-countries, .extra-info, .how-to-play {
+        width: 90%
+    }
+    .border-countries div {
+       font-size: 1.5em;
+       border: 3px solid rgba(255, 255, 255, .25);
+    }
+}
+
+.x-button {
+    border: 3px solid rgba(255, 255, 255, .25);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 2em;
+    text-align: center;
+    width: 60px;
+}
