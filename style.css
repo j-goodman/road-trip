@@ -119,6 +119,11 @@ b {
     display: none;
 }
 
+.border-countries .midnight-timer:hover {
+    background-color: rgba(0, 180, 208, 0);
+    cursor: auto;
+}
+
 @media screen and (max-width: 900px) {
     .border-countries, .extra-info, .how-to-play, .travel-from-here {
         width: 90%

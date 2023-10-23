@@ -89,7 +89,7 @@ const update = () => {
     }
 
     if (countryData[finish]) {
-        destination.innerText = `Destination: ${nameWithThe(countryData[finish].name.common)} (${countryData[finish].subregion})`
+        destination.innerHTML = `Destination: ${nameWithThe(countryData[finish].name.common)} <br class="visible-on-narrow">(${countryData[finish].subregion})`
         subregion.innerText = countryData[currentLocation].subregion.toUpperCase()
     }
 
@@ -140,7 +140,7 @@ const success = () => {
     const rank = getRank(path, shortestPath)
     subregion.innerText = `Number of countries passed through: ${path.length - 1}\n${getShareString(true)}`
     if (rank === "perfect") {
-        travelFromHere.innerHTML = `Your rank is: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}!</b>\nYou found the shortest possible path between ${nameWithThe(countryData[start].name.common)} and ${nameWithThe(countryData[finish].name.common)}. ${isRandomMode ? `` : `Congratulations, world traveler!`}`
+        travelFromHere.innerHTML = `Your rank is: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}${isRandomMode ? `` : `!`}</b>\nYou found the shortest possible path between ${nameWithThe(countryData[start].name.common)} and ${nameWithThe(countryData[finish].name.common)}. ${isRandomMode ? `` : `Congratulations, world traveler!`}`
     } else if (rank === "speedy"){
         travelFromHere.innerHTML = `Your rank is: <b>${speedSymbols[rank]}${rank}</b>. Well done, but a faster path is possible!`
     } else {
@@ -161,11 +161,13 @@ const success = () => {
         bordersContainer.appendChild(tryAgain)
     }
     
-    let shareButton = document.createElement("div")
-    shareButton.onclick = shareResults
-    shareButton.className = "share-button"
-    shareButton.innerText = "Share by Text"
-    bordersContainer.appendChild(shareButton)
+    if (!isRandomMode) {
+        let shareButton = document.createElement("div")
+        shareButton.onclick = shareResults
+        shareButton.className = "share-button"
+        shareButton.innerText = "Share by Text"
+        bordersContainer.appendChild(shareButton)
+    }
 
     if (rank === "perfect") {
         let randomMode = document.createElement("div")
