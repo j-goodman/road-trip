@@ -142,9 +142,9 @@ const success = () => {
     if (rank === "perfect") {
         travelFromHere.innerHTML = `Your rank is: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}${isRandomMode ? `` : `!`}</b>\nYou found the shortest possible path between ${nameWithThe(countryData[start].name.common)} and ${nameWithThe(countryData[finish].name.common)}. ${isRandomMode ? `` : `Congratulations, world traveler!`}`
     } else if (rank === "speedy"){
-        travelFromHere.innerHTML = `Your rank is: <b>${speedSymbols[rank]}${rank}</b>. Well done, but a faster path is possible!`
+        travelFromHere.innerHTML = `Your rank is: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}</b>. Well done, but a faster path is possible!`
     } else {
-        travelFromHere.innerHTML = `Your rank is: <b>${speedSymbols[rank]}${rank}</b>. Better luck next time!`
+        travelFromHere.innerHTML = `Your rank is: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}</b>. Better luck next time!`
     }
     bordersContainer.innerHTML = ""
     
