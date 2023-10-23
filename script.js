@@ -122,9 +122,6 @@ const setDestination = () => {
     while (start === finish) {
         finish = someAccessibleCountries[Math.floor(Math.random() * someAccessibleCountries.length)]
     }
-    
-    start = "RUS"
-    finish = "MEX"
 
     getCountryByCode(start)
     getCountryByCode(finish)
