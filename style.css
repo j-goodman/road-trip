@@ -64,7 +64,6 @@ body {
 .you-are-here {
     text-align: center;
     font-size: 1.5em;
-    margin-bottom: 16px;
 }
 
 .flag {
@@ -72,9 +71,30 @@ body {
 }
 
 .extra-info {
-    margin-top: 32px;
     font-size: .75em;
     width: 40%;
+}
+
+.x-button {
+    border: 3px solid rgba(255, 255, 255, .25);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 2em;
+    margin-top: 16px;
+    text-align: center;
+    width: 60px;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.nondisplay {
+    display: none;
+}
+
+.share {
+    font-size: 2em;
 }
 
 @media screen and (max-width: 900px) {
@@ -85,13 +105,4 @@ body {
        font-size: 1.5em;
        border: 3px solid rgba(255, 255, 255, .25);
     }
-}
-
-.x-button {
-    border: 3px solid rgba(255, 255, 255, .25);
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 2em;
-    text-align: center;
-    width: 60px;
 }
