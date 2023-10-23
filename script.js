@@ -103,7 +103,7 @@ const useThe = (name) => {
         subregion.innerText = ""
         travelFromHere.innerText = ""
         bordersContainer.innerHTML = "You've arrived!"
-        shareButton.classList.remove("nondisplay") = "You've arrived!"
+        shareButton.classList.remove("nondisplay")
     }
     
     let countryData = {}
