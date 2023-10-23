@@ -18,7 +18,13 @@ const travelFromHere = document.querySelector("#travel-from-here")
 const bordersContainer = document.querySelector("#border-countries")
 
 shareButton.onclick = function () {
-    window.open(`sms:&body=My%20text%20for%20iOS%208`, '_self');
+    let shareString = `${path.length - 1} `
+    path.forEach(code => {
+        shareString += countryData[code].flag + "➡️"
+    })
+    shareString += countryData[currentLocation].flag
+    console.log(shareString)
+    window.open(`sms:&body=${shareString}`, '_self');
     return false;
 }
 
@@ -97,7 +103,6 @@ const useThe = (name) => {
     
     const success = () => {
         console.log("Success!")
-        path.push(currentLocation)
         extraInfo.innerText = ""
         destination.innerText = ""
         subregion.innerText = ""
@@ -117,6 +122,9 @@ const setDestination = () => {
     while (start === finish) {
         finish = someAccessibleCountries[Math.floor(Math.random() * someAccessibleCountries.length)]
     }
+    
+    start = "RUS"
+    finish = "MEX"
 
     getCountryByCode(start)
     getCountryByCode(finish)
