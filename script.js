@@ -28,9 +28,9 @@ const speedSymbols = {
 const getRank = (path, shortestPath) => {
     if (path.length - 1 === shortestPath) {
         return "perfect"
-    } else if (path.length - 1 < shortestPath * 1.5) {
+    } else if (path.length - 1 <= shortestPath * 1.5) {
         return "speedy"
-    } else if (path.length - 1 < shortestPath * 4) {
+    } else if (path.length - 1 <= shortestPath * 4) {
         return "tourist"
     } else {
         return "snail"
@@ -140,7 +140,7 @@ const success = () => {
     const rank = getRank(path, shortestPath)
     subregion.innerText = `Number of countries passed through: ${path.length - 1}\n${getShareString(true)}`
     if (rank === "perfect") {
-        travelFromHere.innerHTML = `Your rank is: <b>${speedSymbols[rank]}${rank}!</b>\nYou found the shortest possible path between ${nameWithThe(countryData[start].name.common)} and ${nameWithThe(countryData[finish].name.common)}. ${isRandomMode ? `` : `Congratulations, world traveler!`}`
+        travelFromHere.innerHTML = `Your rank is: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}!</b>\nYou found the shortest possible path between ${nameWithThe(countryData[start].name.common)} and ${nameWithThe(countryData[finish].name.common)}. ${isRandomMode ? `` : `Congratulations, world traveler!`}`
     } else if (rank === "speedy"){
         travelFromHere.innerHTML = `Your rank is: <b>${speedSymbols[rank]}${rank}</b>. Well done, but a faster path is possible!`
     } else {

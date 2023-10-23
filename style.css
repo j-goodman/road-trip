@@ -115,9 +115,17 @@ b {
     padding: 4px 12px;
 }
 
+.visible-on-narrow {
+    display: none;
+}
+
 @media screen and (max-width: 900px) {
     .border-countries, .extra-info, .how-to-play, .travel-from-here {
         width: 90%
+    }
+    
+    .visible-on-narrow {
+        display: block;
     }
 
     .border-countries div {
