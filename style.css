@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Young+Serif&display=swap');
 
+html {
+    overflow-x: hidden;
+}
+
 body {
     align-items: center;
     background-color: #000;
