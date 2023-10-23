@@ -22,18 +22,18 @@ const speedSymbols = {
     perfect: "🐆",
     speedy: "🐎",
     tourist: "🐢",
-    loafer: "🐌"
+    snail: "🐌"
 }
 
 const getRank = (path, shortestPath) => {
     if (path.length - 1 === shortestPath) {
         return "perfect"
-    } else if (path.length - 1 <= shortestPath * 1.5) {
+    } else if (path.length - 1 < shortestPath * 1.5) {
         return "speedy"
-    } else if (path.length - 1 <= shortestPath * 3) {
+    } else if (path.length - 1 < shortestPath * 4) {
         return "tourist"
     } else {
-        return "loafer"
+        return "snail"
     }
 }
 
@@ -48,7 +48,7 @@ const getShareString = (plainText) => {
             if (index > 0) {
                 shareString += countryData[code].flag
             }
-            if (index % 5 === 0) {
+            if (index % 5 === 0 && index !== path.length - 1) {
                 shareString += plainText ? `\n` : `%0A`
             }
         })
@@ -79,14 +79,6 @@ const update = () => {
 
     youAreHere.innerText = `You're in ${nameWithThe(country.name.common)} ${country.flag}`
 
-    if (
-        countryData[start] && countryData[finish] &&
-        countryData[start].continents[0] === countryData[finish].continents[0] ||
-        countryData[start].borders.includes(finish)
-    ) {
-        setDestination()
-    }
-
     let borders = country.borders
     bordersContainer.innerHTML = ""
 
@@ -101,7 +93,7 @@ const update = () => {
         subregion.innerText = countryData[currentLocation].subregion.toUpperCase()
     }
 
-    borders.forEach(code => {
+    borders.sort().forEach(code => {
         if (countryData[code]) {
             let button = document.createElement("div")
             button.innerText = countryData[code].name.common + " " + countryData[code].flag
@@ -174,19 +166,41 @@ const success = () => {
     shareButton.className = "share-button"
     shareButton.innerText = "Share by Text"
     bordersContainer.appendChild(shareButton)
+
+    if (rank === "perfect") {
+        let randomMode = document.createElement("div")
+        randomMode.innerText = "Random Mode"
+        randomMode.className = "share-button"
+        randomMode.onclick = () => {
+            setDestination(true)
+            currentLocation = start
+            travelFromHere.innerText = ""
+            path = []
+            update()
+        }
+        bordersContainer.appendChild(randomMode)
+    }
 }
 
 let countryData = {}
 
-const someAccessibleCountries = ["GUA","MEX","SLV","HND","BLZ","NIC","CRI","PAN","COL","VEN","GUY","SUR","GUF","BRA","BOL","PER","ECU","CHL","PRY","URY","ARG","USA","CAN","RUS","BLR","CHN","NPL","IND","BTN","MAC","LAO","KGZ","PRK","KOR","MNG","MMR","THA","MYS","IDN","TLS","BRN","KHM","VNM","HKG","TJK","UZB","TKM","IRN","IRQ","SAU","ARE","YEM","KWT","QAT","OMN","JOR","PSE","ISR","EGY","LBY","NER","BFA","GHA","CIV","MLI","SEN","GNB","GIN","MRT","DZA","TUN","LBN","SYR","PAK","AFG","AZE","GEO","TUR","ARM","TCD","CMR","GAB","COG","AGO","ZMB","NAM","BWA","ZAF","MOZ","LSO","SWZ","ZWE","TZA","KEN","MWI","UGA","RWA","COD","BDI","SOM","ETH","ERI","SDN","CAF","MAR","ESP","PRT","GIB","AND","FRA","MCO","CHE","AUT","CZE","DEU","DNK","POL","LTU","LVA","EST","FIN","SWE","NOR","BGD","GRC","ALB","MKD","SRB","HRV","SVN","ITA","BIH","ROU","MDA","UKR","HUN","LIE","SMR","VAT","BEL","NLD"] // 142
-
-const setDestination = () => {
-    start = someAccessibleCountries[Math.floor(Math.random() * someAccessibleCountries.length)]
-    finish = someAccessibleCountries[Math.floor(Math.random() * someAccessibleCountries.length)]
-    
-    while (start === finish) {
-        finish = someAccessibleCountries[Math.floor(Math.random() * someAccessibleCountries.length)]
+const setDestination = (random) => {
+    let daysSinceGameStarted = Math.floor(Date.now()/1000/60/60/24) - 19653
+    // days since October 23, 2023
+    let startIndex = daysSinceGameStarted % destinations.length
+    let finishIndex = (daysSinceGameStarted + 1) % destinations.length
+    if (random) {
+        start = null
+        finish = null
+        while (start === finish) {
+            startIndex = Math.floor(Math.random() * destinations.length)
+            finishIndex = Math.floor(Math.random() * destinations.length)
+            start = destinations[startIndex]
+            finish = destinations[finishIndex]
+        }
     }
+    start = destinations[startIndex]
+    finish = destinations[finishIndex]
 
     findShortestPath(start, finish)
     currentLocation = start

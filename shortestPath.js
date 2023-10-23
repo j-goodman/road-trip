@@ -19,7 +19,7 @@ const continuePathing = (country, accumulator, distance) => {
         country.borders.push("RUS")
     }
     country.borders.forEach(border => {
-        if (accumulator[border] === undefined) {
+        if (accumulator[border] === undefined || accumulator[border] > distance) {
             accumulator[border] = distance
             getCountryByCode(border, continuePathing, accumulator, distance + 1)
         }
