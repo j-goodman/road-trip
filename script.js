@@ -1,8 +1,11 @@
-const getCountryByCode = (code) => {
+const getCountryByCode = (code, callback, accumulator, distance) => {
     fetch(`https://restcountries.com/v3.1/alpha/${code}`)
     .then(response => response.json())
     .then(data => {
         countryData[code] = data[0]
+        if (callback) {
+            callback(data[0], accumulator, distance)
+        }
         update()
     })
 }
@@ -11,18 +14,48 @@ const youAreHere = document.querySelector("#you-are-here")
 const extraInfo = document.querySelector("#extra-info")
 const howToPlay = document.querySelector("#how-to-play")
 const xButton = document.querySelector("#x-button")
-const shareButton = document.querySelector("#share-button")
 const destination = document.querySelector("#destination")
 const subregion = document.querySelector("#subregion")
 const travelFromHere = document.querySelector("#travel-from-here")
 const bordersContainer = document.querySelector("#border-countries")
+const speedSymbols = {
+    perfect: "🐆",
+    speedy: "🐎",
+    tourist: "🐢",
+    loafer: "🐌"
+}
 
-shareButton.onclick = function () {
-    let shareString = `${path.length - 1} `
-    path.forEach(code => {
-        shareString += countryData[code].flag + "➡️"
-    })
-    shareString += countryData[currentLocation].flag
+const getRank = (path, shortestPath) => {
+    if (path.length - 1 === shortestPath) {
+        return "perfect"
+    } else if (path.length - 1 <= shortestPath * 1.5) {
+        return "speedy"
+    } else if (path.length - 1 <= shortestPath * 3) {
+        return "tourist"
+    } else {
+        return "loafer"
+    }
+}
+
+const shareResults = function () {
+    let shareString = ``
+    shareString += `${countryData[start].flag}`
+    shareString += speedSymbols[getRank(path, shortestPath)]
+    shareString += `${emojiNumber((path.length - 1).toString().padStart(2, "0"))}`
+    shareString += `${countryData[finish].flag}`
+    if (path.length - 1 <= 35) {
+        path.forEach((code, index) => {
+            if (index > 0) {
+                shareString += countryData[code].flag
+            }
+            if (index % 5 === 0) {
+                shareString += `\n`
+            }
+        })
+    } else {
+        shareString += `🐌🐌🐌🐌🐌`
+    }
+    shareString = shareString.trim()
     console.log(shareString)
     window.open(`sms:&body=${shareString}`, '_self');
     return false;
@@ -34,9 +67,15 @@ xButton.onclick = () => {
 
 const update = () => {
     let country = countryData[currentLocation]
+    
+    if (!country) {
+        return false
+    }
+
     youAreHere.innerText = `You're in ${nameWithThe(country.name.common)} ${country.flag}`
 
     if (
+        countryData[start] && countryData[finish] &&
         countryData[start].continents[0] === countryData[finish].continents[0] ||
         countryData[start].borders.includes(finish)
     ) {
@@ -52,8 +91,10 @@ const update = () => {
         borders.push("USA")
     }
 
-    destination.innerText = `Destination: ${nameWithThe(countryData[finish].name.common)} (${countryData[finish].subregion})`
-    subregion.innerText = countryData[currentLocation].subregion.toUpperCase()
+    if (countryData[finish]) {
+        destination.innerText = `Destination: ${nameWithThe(countryData[finish].name.common)} (${countryData[finish].subregion})`
+        subregion.innerText = countryData[currentLocation].subregion.toUpperCase()
+    }
 
     borders.forEach(code => {
         if (countryData[code]) {
@@ -70,7 +111,14 @@ const update = () => {
         }
     })
     
-    extraInfo.innerText = `${useThe(country.name.official) ? "The " : ""}${country.name.official} is in ${country.subregion}. There are ${country.population.toLocaleString()} ${country.demonyms.eng.f} people, and the capital is ${country.capital}${country.capital[0][country.capital[0].length - 1] === "." ? "" : "."}`
+    let capitalString = ``
+    if (!country.capital) {
+        capitalString = `it does not have an official capital.`
+    } else {
+        capitalString = `the capital is ${nameWithThe(country.capital[0])}${country.capital[0][country.capital[0].length - 1] === "." ? "" : "."}`
+    }
+
+    extraInfo.innerText = `${useThe(country.name.official) ? "The " : ""}${country.name.official} is in ${country.subregion}. There are about ${approximateNumber(country.population)} ${country.demonyms.eng.f} people, and ${capitalString}`
     
     if (currentLocation === finish) {
         success()
@@ -79,41 +127,41 @@ const update = () => {
 
 let path = []
 
-const useThe = (name) => {
-    let words = name.split(" ")
-    if (
-        words.includes("Republic") ||
-        words.includes("Federation") ||
-        words.includes("Kingdom") ||
-        words.includes("Duchy") ||
-        words.includes("State") ||
-        words.includes("Confederation") ||
-        words.includes("Principality") ||
-        words.includes("Sultanate") ||
-        words.includes("United")
-        ) {
-            return true
-        }
-        return false
+const success = () => {
+    console.log("Success!")
+    destination.innerText = "You made it!"
+    const rank = getRank(path, shortestPath)
+    subregion.innerText = `Number of countries passed through: ${path.length - 1}\n${countryData[start].flag}${speedSymbols[rank]}${emojiNumber((path.length - 1).toString().padStart(2, "0"))}${countryData[finish].flag}`
+    if (rank === "perfect") {
+        travelFromHere.innerHTML = `Your rank is: <b>${speedSymbols[rank]} ${rank}!</b>\nYou found the shortest possible path between ${countryData[start].name.common} and ${countryData[finish].name.common}. Congratulations, world traveler!`
+    } else if (rank === "speedy"){
+        travelFromHere.innerHTML = `Your rank is: <b>${speedSymbols[rank]} ${rank}</b>. Well done, but a faster path is possible!`
+    } else {
+        travelFromHere.innerHTML = `Your rank is: <b>${speedSymbols[rank]} ${rank}</b>. Better luck next time!`
     }
+    bordersContainer.innerHTML = ""
     
-    const nameWithThe = (name) => {
-        return `${useThe(name) ? "the " : ""}${name}`
+    let tryAgain = document.createElement("div")
+    tryAgain.innerText = "Try Again?"
+    tryAgain.className = "share-button"
+    tryAgain.onclick = () => {
+        currentLocation = start
+        travelFromHere.innerText = "You can travel to:"
+        path = []
+        update()
     }
+    bordersContainer.appendChild(tryAgain)
     
-    const success = () => {
-        console.log("Success!")
-        extraInfo.innerText = ""
-        destination.innerText = ""
-        subregion.innerText = ""
-        travelFromHere.innerText = ""
-        bordersContainer.innerHTML = "You've arrived!"
-        shareButton.classList.remove("nondisplay")
-    }
-    
-    let countryData = {}
-    
-    const someAccessibleCountries = ["GUA","MEX","SLV","HND","BLZ","NIC","CRI","PAN","COL","VEN","GUY","SUR","GUF","BRA","BOL","PER","ECU","CHL","PRY","URY","ARG","USA","CAN","RUS","BLR","CHN","NPL","IND","BTN","MAC","LAO","KGZ","PRK","KOR","MNG","MMR","THA","MYS","IDN","TLS","BRN","KHM","VNM","HKG","TJK","UZB","TKM","IRN","IRQ","SAU","ARE","YEM","KWT","QAT","OMN","JOR","PSE","ISR","EGY","LBY","NER","BFA","GHA","CIV","MLI","SEN","GNB","GIN","MRT","DZA","TUN","LBN","SYR","PAK","AFG","AZE","GEO","TUR","ARM","TCD","CMR","GAB","COG","AGO","ZMB","NAM","BWA","ZAF","MOZ","LSO","SWZ","ZWE","TZA","KEN","MWI","UGA","RWA","COD","BDI","SOM","ETH","ERI","SDN","CAF","MAR","ESP","PRT","GIB","AND","FRA","MCO","CHE","AUT","CZE","DEU","DNK","POL","LTU","LVA","EST","FIN","SWE","NOR","BGD","GRC","ALB","MKD","SRB","HRV","SVN","ITA","BIH","ROU","MDA","UKR","HUN","LIE","SMR","VAT","BEL","NLD"] // 142
+    let shareButton = document.createElement("div")
+    shareButton.onclick = shareResults
+    shareButton.className = "share-button"
+    shareButton.innerText = "Share by Text"
+    bordersContainer.appendChild(shareButton)
+}
+
+let countryData = {}
+
+const someAccessibleCountries = ["GUA","MEX","SLV","HND","BLZ","NIC","CRI","PAN","COL","VEN","GUY","SUR","GUF","BRA","BOL","PER","ECU","CHL","PRY","URY","ARG","USA","CAN","RUS","BLR","CHN","NPL","IND","BTN","MAC","LAO","KGZ","PRK","KOR","MNG","MMR","THA","MYS","IDN","TLS","BRN","KHM","VNM","HKG","TJK","UZB","TKM","IRN","IRQ","SAU","ARE","YEM","KWT","QAT","OMN","JOR","PSE","ISR","EGY","LBY","NER","BFA","GHA","CIV","MLI","SEN","GNB","GIN","MRT","DZA","TUN","LBN","SYR","PAK","AFG","AZE","GEO","TUR","ARM","TCD","CMR","GAB","COG","AGO","ZMB","NAM","BWA","ZAF","MOZ","LSO","SWZ","ZWE","TZA","KEN","MWI","UGA","RWA","COD","BDI","SOM","ETH","ERI","SDN","CAF","MAR","ESP","PRT","GIB","AND","FRA","MCO","CHE","AUT","CZE","DEU","DNK","POL","LTU","LVA","EST","FIN","SWE","NOR","BGD","GRC","ALB","MKD","SRB","HRV","SVN","ITA","BIH","ROU","MDA","UKR","HUN","LIE","SMR","VAT","BEL","NLD"] // 142
 
 const setDestination = () => {
     start = someAccessibleCountries[Math.floor(Math.random() * someAccessibleCountries.length)]
@@ -123,8 +171,7 @@ const setDestination = () => {
         finish = someAccessibleCountries[Math.floor(Math.random() * someAccessibleCountries.length)]
     }
 
-    getCountryByCode(start)
-    getCountryByCode(finish)
+    findShortestPath(start, finish)
     currentLocation = start
 }
 
