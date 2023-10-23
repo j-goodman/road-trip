@@ -9,7 +9,6 @@ const useThe = (name) => {
         words.includes("Confederation") ||
         words.includes("Principality") ||
         words.includes("Sultanate") ||
-        words.includes("City") ||
         words.includes("United")
     ) {
         return true

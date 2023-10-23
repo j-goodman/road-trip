@@ -43,7 +43,7 @@ const getShareString = (plainText) => {
     shareString += speedSymbols[getRank(path, shortestPath)]
     shareString += `${emojiNumber((path.length - 1).toString().padStart(2, "0"))}`
     shareString += `${countryData[finish].flag}`
-    if (path.length - 1 <= 35) {
+    if (path.length - 1 <= 40) {
         path.forEach((code, index) => {
             if (index > 0) {
                 shareString += countryData[code].flag
@@ -53,6 +53,7 @@ const getShareString = (plainText) => {
             }
         })
     } else {
+        shareString += plainText ? `\n` : `%0A`
         shareString += `🐌🐌🐌🐌🐌`
     }
     return shareString.trim()
@@ -117,7 +118,17 @@ const update = () => {
     
     let capitalString = ``
     if (!country.capital) {
-        capitalString = `it does not have an official capital.`
+        capitalString = `it doesn't have an official capital.`
+    } else if (country.capital.length > 1) {
+        let list = ""
+        country.capital.forEach((city, index) => {
+            if (index === country.capital.length - 1) {
+                list += `and ${city}`
+            } else {
+                list += `${city}, `
+            }
+            capitalString = `the capital cities are ${list}.`
+        })
     } else {
         capitalString = `the capital is ${nameWithThe(country.capital[0])}${country.capital[0][country.capital[0].length - 1] === "." ? "" : "."}`
     }
@@ -135,7 +146,7 @@ const success = () => {
     console.log("Success!")
     destination.innerText = "You made it!"
     const rank = getRank(path, shortestPath)
-    subregion.innerText = getShareString(true)
+    subregion.innerText = `Number of countries passed through: ${path.length - 1}\n${getShareString(true)}`
     if (rank === "perfect") {
         travelFromHere.innerHTML = `Your rank is: <b>${speedSymbols[rank]}${rank}!</b>\nYou found the shortest possible path between ${nameWithThe(countryData[start].name.common)} and ${nameWithThe(countryData[finish].name.common)}. Congratulations, world traveler!`
     } else if (rank === "speedy"){
@@ -182,6 +193,7 @@ const setDestination = () => {
 }
 
 let start, finish, currentLocation;
+getCountryByCode(finish)
 setDestination()
 
 getCountryByCode(currentLocation)
