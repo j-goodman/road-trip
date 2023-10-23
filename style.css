@@ -138,6 +138,10 @@ b {
        border: 3px solid rgba(255, 255, 255, .25);
     }
 
+    .border-countries div:hover {
+        background-color: rgba(0, 180, 208, 0);
+    }
+
     .border-countries .midnight-timer {
         border: none;
         font-size: 0.8em;
