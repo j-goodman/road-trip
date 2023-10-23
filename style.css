@@ -99,8 +99,19 @@ body {
     font-size: 2em;
 }
 
+.travel-from-here {
+    width: 70%;
+}
+
+b {
+    background: rgba(0, 180, 208, .7);
+    border-radius: 4px;
+    font-size: 1.2em;
+    padding: 4px 12px;
+}
+
 @media screen and (max-width: 900px) {
-    .border-countries, .extra-info, .how-to-play {
+    .border-countries, .extra-info, .how-to-play, .travel-from-here {
         width: 90%
     }
     .border-countries div {
