@@ -104,7 +104,7 @@ body {
 }
 
 b {
-    background: rgba(0, 180, 208, .7);
+    background: rgba(0, 180, 208, .5);
     border-radius: 4px;
     font-size: 1.2em;
     padding: 4px 12px;

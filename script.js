@@ -37,7 +37,7 @@ const getRank = (path, shortestPath) => {
     }
 }
 
-const shareResults = function () {
+const getShareString = (plainText) => {
     let shareString = ``
     shareString += `${countryData[start].flag}`
     shareString += speedSymbols[getRank(path, shortestPath)]
@@ -49,15 +49,19 @@ const shareResults = function () {
                 shareString += countryData[code].flag
             }
             if (index % 5 === 0) {
-                shareString += `\n`
+                shareString += plainText ? `\n` : `%0A`
             }
         })
     } else {
         shareString += `🐌🐌🐌🐌🐌`
     }
-    shareString = shareString.trim()
+    return shareString.trim()
+}
+
+const shareResults = () => {
+    const shareString = getShareString(false)
     console.log(shareString)
-    window.open(`sms:&body=${shareString}`, '_self');
+    window.open(`sms:&body=${shareString}`, `_self`);
     return false;
 }
 
@@ -131,26 +135,28 @@ const success = () => {
     console.log("Success!")
     destination.innerText = "You made it!"
     const rank = getRank(path, shortestPath)
-    subregion.innerText = `Number of countries passed through: ${path.length - 1}\n${countryData[start].flag}${speedSymbols[rank]}${emojiNumber((path.length - 1).toString().padStart(2, "0"))}${countryData[finish].flag}`
+    subregion.innerText = getShareString(true)
     if (rank === "perfect") {
-        travelFromHere.innerHTML = `Your rank is: <b>${speedSymbols[rank]} ${rank}!</b>\nYou found the shortest possible path between ${countryData[start].name.common} and ${countryData[finish].name.common}. Congratulations, world traveler!`
+        travelFromHere.innerHTML = `Your rank is: <b>${speedSymbols[rank]}${rank}!</b>\nYou found the shortest possible path between ${nameWithThe(countryData[start].name.common)} and ${nameWithThe(countryData[finish].name.common)}. Congratulations, world traveler!`
     } else if (rank === "speedy"){
-        travelFromHere.innerHTML = `Your rank is: <b>${speedSymbols[rank]} ${rank}</b>. Well done, but a faster path is possible!`
+        travelFromHere.innerHTML = `Your rank is: <b>${speedSymbols[rank]}${rank}</b>. Well done, but a faster path is possible!`
     } else {
-        travelFromHere.innerHTML = `Your rank is: <b>${speedSymbols[rank]} ${rank}</b>. Better luck next time!`
+        travelFromHere.innerHTML = `Your rank is: <b>${speedSymbols[rank]}${rank}</b>. Better luck next time!`
     }
     bordersContainer.innerHTML = ""
     
-    let tryAgain = document.createElement("div")
-    tryAgain.innerText = "Try Again?"
-    tryAgain.className = "share-button"
-    tryAgain.onclick = () => {
-        currentLocation = start
-        travelFromHere.innerText = "You can travel to:"
-        path = []
-        update()
+    if (rank !== "perfect") {
+        let tryAgain = document.createElement("div")
+        tryAgain.innerText = "Try Again?"
+        tryAgain.className = "share-button"
+        tryAgain.onclick = () => {
+            currentLocation = start
+            travelFromHere.innerText = "You can travel to:"
+            path = []
+            update()
+        }
+        bordersContainer.appendChild(tryAgain)
     }
-    bordersContainer.appendChild(tryAgain)
     
     let shareButton = document.createElement("div")
     shareButton.onclick = shareResults
