@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="utils.js"></script>
+    <script defer src="shortestPath.js"></script>
     <script defer src="script.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/webp" href="car.webp">
@@ -11,7 +13,7 @@
 <body>
     <div id="how-to-play" class="how-to-play">
         <div class="game-name">How to play</div>
-        <div>See how fast you can get from a random starting point to your destination by traveling through neighboring countries. <br><br> Luckily, construction on the Alaska-Siberia Bridge just finished, so you can drive between the United States and Russia.</div>
+        <div>See how fast you can get from a random starting point to your destination by traveling through neighboring countries. <br><br> You can drive between the United States and Russia over the famous Alaska-Siberia Bridge.</div>
         <div class="x-button" id="x-button">X</div>
     </div>
     <div class="game-container">
@@ -21,11 +23,10 @@
         <div id="you-are-here" class="you-are-here">.</div>
         <div id="subregion" class="extra-info center-text"></div>
         <br>
-        <div id="travel-from-here">You can travel from here to:</div>
+        <div id="travel-from-here" class="travel-from-here center-text">You can travel from here to:</div>
         <div id="border-countries" class="border-countries"></div>
         <br>
         <div id="extra-info" class="extra-info"></div>
     </div>
-    <div id="share-button" class="share-button nondisplay">share</div>
 </body>
 </html>
