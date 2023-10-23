@@ -115,8 +115,14 @@ b {
     .border-countries, .extra-info, .how-to-play, .travel-from-here {
         width: 90%
     }
+
     .border-countries div {
        font-size: 1.4em;
        border: 3px solid rgba(255, 255, 255, .25);
+    }
+
+    .border-countries .midnight-timer {
+        border: none;
+        font-size: 0.8em;
     }
 }

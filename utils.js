@@ -40,6 +40,7 @@ const buildMidnightTimer = () => {
     let timer = document.createElement("div")
 
     timer.innerText = `Time until the next game: ${timeUntilMidnight()}`
+    timer.className = "midnight-timer"
     setInterval(() => {
         timer.innerText = `Time until the next game: ${timeUntilMidnight()}`
     }, 1000)
