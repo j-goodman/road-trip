@@ -133,14 +133,14 @@ const update = () => {
 }
 
 let path = []
+let isRandomMode = false
 
 const success = () => {
-    console.log("Success!")
     destination.innerText = "You made it!"
     const rank = getRank(path, shortestPath)
     subregion.innerText = `Number of countries passed through: ${path.length - 1}\n${getShareString(true)}`
     if (rank === "perfect") {
-        travelFromHere.innerHTML = `Your rank is: <b>${speedSymbols[rank]}${rank}!</b>\nYou found the shortest possible path between ${nameWithThe(countryData[start].name.common)} and ${nameWithThe(countryData[finish].name.common)}. Congratulations, world traveler!`
+        travelFromHere.innerHTML = `Your rank is: <b>${speedSymbols[rank]}${rank}!</b>\nYou found the shortest possible path between ${nameWithThe(countryData[start].name.common)} and ${nameWithThe(countryData[finish].name.common)}. ${isRandomMode ? `` : `Congratulations, world traveler!`}`
     } else if (rank === "speedy"){
         travelFromHere.innerHTML = `Your rank is: <b>${speedSymbols[rank]}${rank}</b>. Well done, but a faster path is possible!`
     } else {
@@ -169,6 +169,7 @@ const success = () => {
 
     if (rank === "perfect") {
         let randomMode = document.createElement("div")
+        isRandomMode = true
         randomMode.innerText = "Random Mode"
         randomMode.className = "share-button"
         randomMode.onclick = () => {
@@ -180,6 +181,8 @@ const success = () => {
         }
         bordersContainer.appendChild(randomMode)
     }
+
+    bordersContainer.appendChild(buildMidnightTimer())
 }
 
 let countryData = {}

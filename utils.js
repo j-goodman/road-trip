@@ -6,6 +6,7 @@ const useThe = (name) => {
         words.includes("Kingdom") ||
         words.includes("Duchy") ||
         words.includes("State") ||
+        words.includes("Nation") ||
         words.includes("Confederation") ||
         words.includes("Principality") ||
         words.includes("Sultanate") ||
@@ -14,6 +15,36 @@ const useThe = (name) => {
         return true
     }
     return false
+}
+
+const timeUntilMidnight = () => {
+    let midnight = new Date()
+    midnight.setHours( 24 )
+    midnight.setMinutes( 0 )
+    midnight.setSeconds( 0 )
+    midnight.setMilliseconds( 0 )
+
+    let seconds = Math.floor((midnight.getTime() - new Date().getTime() ) / 1000);
+    // (number of seconds until midnight.)
+
+    let hours = Math.floor(seconds / 60 / 60)
+    seconds -= (hours * 60 * 60)
+    let minutes = Math.floor(seconds / 60).toString().padStart(2, "0")
+    seconds -= (minutes * 60)
+    seconds = seconds.toString().padStart(2, "0")
+
+    return `${hours}:${minutes}:${seconds}`
+}
+
+const buildMidnightTimer = () => {
+    let timer = document.createElement("div")
+
+    timer.innerText = `Time until the next game: ${timeUntilMidnight()}`
+    setInterval(() => {
+        timer.innerText = `Time until the next game: ${timeUntilMidnight()}`
+    }, 1000)
+
+    return timer
 }
     
 const nameWithThe = (name) => {
