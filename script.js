@@ -11,13 +11,13 @@ const youAreHere = document.querySelector("#you-are-here")
 const extraInfo = document.querySelector("#extra-info")
 const howToPlay = document.querySelector("#how-to-play")
 const xButton = document.querySelector("#x-button")
-const share = document.querySelector("#share")
+const shareButton = document.querySelector("#share-button")
 const destination = document.querySelector("#destination")
 const subregion = document.querySelector("#subregion")
 const travelFromHere = document.querySelector("#travel-from-here")
 const bordersContainer = document.querySelector("#border-countries")
 
-share.onclick = function () {
+shareButton.onclick = function () {
     window.open(`sms:&body=My%20text%20for%20iOS%208`, '_self');
     return false;
 }
@@ -103,7 +103,7 @@ const useThe = (name) => {
         subregion.innerText = ""
         travelFromHere.innerText = ""
         bordersContainer.innerHTML = "You've arrived!"
-        share.classList.remove("nondisplay") = "You've arrived!"
+        shareButton.classList.remove("nondisplay") = "You've arrived!"
     }
     
     let countryData = {}
