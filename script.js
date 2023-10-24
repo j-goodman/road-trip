@@ -100,6 +100,7 @@ const update = () => {
             bordersContainer.appendChild(button)
             button.onclick = () => {
                 path.push(currentLocation)
+                xButton.onclick()
                 currentLocation = code
                 update()
             }
