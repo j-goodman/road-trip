@@ -39,10 +39,10 @@ const timeUntilMidnight = () => {
 const buildMidnightTimer = () => {
     let timer = document.createElement("div")
 
-    timer.innerText = `Time until the next game: ${timeUntilMidnight()}`
+    timer.innerHTML = `Time until the next game: <em>${timeUntilMidnight()}</em>`
     timer.className = "midnight-timer"
     setInterval(() => {
-        timer.innerText = `Time until the next game: ${timeUntilMidnight()}`
+        timer.innerHTML = `Time until the next game: <em>${timeUntilMidnight()}</em>`
     }, 1000)
 
     return timer

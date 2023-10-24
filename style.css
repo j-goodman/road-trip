@@ -132,6 +132,10 @@ b {
     font-size: .75em;
 }
 
+em {
+    font-style: none;
+}
+
 @media screen and (max-width: 900px) {
     .border-countries, .extra-info, .how-to-play, .travel-from-here {
         width: 90%
@@ -158,6 +162,12 @@ b {
 
     .border-countries .midnight-timer {
         border: none;
-        font-size: 0.8em;
+        font-size: 1em;
+    }
+
+    .border-countries .midnight-timer em {
+        border: none;
+        font-style: normal;
+        font-size: 2em;
     }
 }
