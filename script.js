@@ -140,11 +140,13 @@ const success = () => {
     const rank = getRank(path, shortestPath)
     subregion.innerText = `Number of countries passed through: ${path.length - 1}\n${getShareString(true)}`
     if (rank === "direct route") {
-        travelFromHere.innerHTML = `Your rank is: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}${isRandomMode ? `` : `!`}</b>\nYou found the shortest path between ${nameWithThe(countryData[start].name.common)} and ${nameWithThe(countryData[finish].name.common)}. ${isRandomMode ? `` : `Congratulations!`}`
+        travelFromHere.innerHTML = `Your rank: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}${isRandomMode ? `.` : `!`}</b>\nYou found the shortest path between ${nameWithThe(countryData[start].name.common)} and ${nameWithThe(countryData[finish].name.common)}. ${isRandomMode ? `` : `Congratulations!`}`
     } else if (rank === "speedy"){
-        travelFromHere.innerHTML = `Your rank is: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}</b>. Well done, but there was a faster path!`
+        travelFromHere.innerHTML = `Your rank: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}</b>. Well done, but there was a faster path!`
+    } else if (rank === "tourist") {
+        travelFromHere.innerHTML = `Your rank: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}</b>. You took your time to see the sights!`
     } else {
-        travelFromHere.innerHTML = `Your rank is: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}</b>. Better luck next time!`
+        travelFromHere.innerHTML = `Your rank: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}</b>. Better luck next time!`
     }
     bordersContainer.innerHTML = ""
     

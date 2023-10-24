@@ -19,7 +19,9 @@ body {
 .game-name {
     font-family: 'Young Serif', serif;
     font-style: italic;
-    font-size: 1.5em;
+    font-size: 2.5em;
+    text-align: left;
+    width: 100%;
 }
 
 .game-container, .how-to-play {
@@ -41,7 +43,7 @@ body {
 }
 
 .how-to-play .game-name {
-    margin-bottom: 24px;
+    margin-bottom: 12px;
 }
 
 .border-countries {
@@ -146,9 +148,9 @@ b {
        border: 3px solid rgba(255, 255, 255, .25);
     }
 
-    /* .border-countries a:hover {
+    .border-countries a:hover {
         background-color: rgba(0, 180, 208, 0);
-    } */
+    }
 
     .border-countries .midnight-timer {
         border: none;
