@@ -190,7 +190,7 @@ const success = () => {
 let countryData = {}
 
 const setDestination = (random) => {
-    let daysSinceGameStarted = Math.floor(Date.now()/1000/60/60/24) - 19653
+    let daysSinceGameStarted = Math.floor(((Date.now()/1000/60/60) - 4)/24) - 19653
     // days since October 23, 2023
     let startIndex = daysSinceGameStarted % destinations.length
     let finishIndex = (daysSinceGameStarted + 1) % destinations.length
