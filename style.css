@@ -98,9 +98,13 @@ body {
     display: none;
 }
 
-.share-button {
-    font-size: 2em;
+.share-button, .midnight-timer {
+    font-size: 1.5em;
     text-align: center;
+}
+
+.share-button {
+    font-family: 'Young Serif', serif;
 }
 
 .travel-from-here {

@@ -140,18 +140,18 @@ const success = () => {
     const rank = getRank(path, shortestPath)
     subregion.innerText = `Number of countries passed through: ${path.length - 1}\n${getShareString(true)}`
     if (rank === "direct route") {
-        travelFromHere.innerHTML = `Your rank: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}${isRandomMode ? `.` : `!`}</b>\nYou found the shortest path between ${nameWithThe(countryData[start].name.common)} and ${nameWithThe(countryData[finish].name.common)}. ${isRandomMode ? `` : `Congratulations!`}`
-    } else if (rank === "speedy"){
-        travelFromHere.innerHTML = `Your rank: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}</b>. Well done, but there was a faster path!`
+        travelFromHere.innerHTML = `Your rank: <br class="visible-on-narrow"><b>${speedSymbols[rank]} ${rank}${isRandomMode ? `.` : `!`}</b>\nYou found the shortest path between ${nameWithThe(countryData[start].name.common)} and ${nameWithThe(countryData[finish].name.common)}. ${isRandomMode ? `` : `Congratulations!`}`
+    } else if (rank === "quick"){
+        travelFromHere.innerHTML = `Your rank: <br class="visible-on-narrow"><b>${speedSymbols[rank]} ${rank}</b>. Well done, but there was a faster path!`
     } else if (rank === "tourist") {
-        travelFromHere.innerHTML = `Your rank: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}</b>. You took your time to see the sights!`
+        travelFromHere.innerHTML = `Your rank: <br class="visible-on-narrow"><b>${speedSymbols[rank]} ${rank}</b>. You took your time to see the sights!`
     } else {
-        travelFromHere.innerHTML = `Your rank: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}</b>. Better luck next time!`
+        travelFromHere.innerHTML = `Your rank: <br class="visible-on-narrow"><b>${speedSymbols[rank]} ${rank}</b>. Better luck next time!`
     }
     bordersContainer.innerHTML = ""
     
     if (rank !== "direct route") {
-        let tryAgain = document.createElement("div")
+        let tryAgain = document.createElement("a")
         tryAgain.innerText = "Try Again?"
         tryAgain.className = "share-button"
         tryAgain.onclick = () => {
@@ -164,7 +164,7 @@ const success = () => {
     }
     
     if (!isRandomMode) {
-        let shareButton = document.createElement("div")
+        let shareButton = document.createElement("a")
         shareButton.onclick = shareResults
         shareButton.className = "share-button"
         shareButton.innerText = "Share by Text"
@@ -172,7 +172,7 @@ const success = () => {
     }
 
     if (rank === "direct route") {
-        let randomMode = document.createElement("div")
+        let randomMode = document.createElement("a")
         isRandomMode = true
         randomMode.innerText = "Random Mode"
         randomMode.className = "share-button"
@@ -192,8 +192,8 @@ const success = () => {
 let countryData = {}
 
 const setDestination = (random) => {
-    let daysSinceGameStarted = Math.floor(((Date.now()/1000/60/60) - 4)/24) - 19653
-    // days since October 23, 2023
+    let daysSinceGameStarted = Math.floor(((Date.now()/1000/60/60) - 4)/24) - 19654
+    // days since October 24, 2023
     let startIndex = daysSinceGameStarted % destinations.length
     let finishIndex = (daysSinceGameStarted + 1) % destinations.length
     if (random) {
