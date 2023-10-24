@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Young+Serif&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Montserrat:wght@400;700&family=Young+Serif&display=swap');
 
 html {
     overflow-x: hidden;
@@ -11,6 +11,7 @@ body {
     display: flex;
     flex-direction: column;
     font-family: 'Montserrat', sans-serif;
+    font-family: 'Atkinson Hyperlegible', sans-serif;
     max-width: 100%;
     overflow-x: hidden;
 }
@@ -56,13 +57,13 @@ body {
     width: 40%;
 }
 
-.border-countries div {
+.border-countries a {
     border-radius: 4px;
     margin: 8px;
     padding: 8px;
 }
 
-.border-countries div:hover {
+.border-countries a:hover {
     background-color: rgba(0, 180, 208, .5);
     cursor: pointer;
 }
@@ -70,10 +71,6 @@ body {
 .you-are-here {
     text-align: center;
     font-size: 1.5em;
-}
-
-.flag {
-    font-size: 2em;
 }
 
 .extra-info {
@@ -112,6 +109,7 @@ b {
     background: rgba(0, 180, 208, .5);
     border-radius: 4px;
     font-size: 1.2em;
+    font-weight: normal;
     padding: 4px 12px;
 }
 
@@ -124,6 +122,10 @@ b {
     cursor: auto;
 }
 
+.text-small {
+    font-size: .75em;
+}
+
 @media screen and (max-width: 900px) {
     .border-countries, .extra-info, .how-to-play, .travel-from-here {
         width: 90%
@@ -133,12 +135,18 @@ b {
         display: block;
     }
 
-    .border-countries div {
-       font-size: 1.4em;
+    .border-countries a {
+       font-size: 1em;
        border: 3px solid rgba(255, 255, 255, .25);
     }
 
-    .border-countries div:hover {
+    .border-countries div:active {
+       font-size: 1em;
+       background-color: rgba(255, 255, 255, .75);
+       border: 3px solid rgba(255, 255, 255, .25);
+    }
+
+    .border-countries a:hover {
         background-color: rgba(0, 180, 208, 0);
     }
 

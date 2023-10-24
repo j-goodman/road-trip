@@ -19,17 +19,17 @@ const subregion = document.querySelector("#subregion")
 const travelFromHere = document.querySelector("#travel-from-here")
 const bordersContainer = document.querySelector("#border-countries")
 const speedSymbols = {
-    perfect: "🐆",
-    speedy: "🐎",
+    'direct route': "🐆",
+    quick: "🐎",
     tourist: "🐢",
     snail: "🐌"
 }
 
 const getRank = (path, shortestPath) => {
     if (path.length - 1 === shortestPath) {
-        return "perfect"
+        return "direct route"
     } else if (path.length - 1 <= shortestPath * 1.5) {
-        return "speedy"
+        return "quick"
     } else if (path.length - 1 <= shortestPath * 4) {
         return "tourist"
     } else {
@@ -89,13 +89,13 @@ const update = () => {
     }
 
     if (countryData[finish]) {
-        destination.innerHTML = `Destination: ${nameWithThe(countryData[finish].name.common)} <br class="visible-on-narrow">(${countryData[finish].subregion})`
+        destination.innerHTML = `Destination: ${nameWithThe(countryData[finish].name.common)} <br class="visible-on-narrow">(<span class="text-small">${countryData[finish].subregion}</span>)`
         subregion.innerText = countryData[currentLocation].subregion.toUpperCase()
     }
 
     borders.sort().forEach(code => {
         if (countryData[code]) {
-            let button = document.createElement("div")
+            let button = document.createElement("a")
             button.innerText = countryData[code].name.common + " " + countryData[code].flag
             bordersContainer.appendChild(button)
             button.onclick = () => {
@@ -139,22 +139,22 @@ const success = () => {
     destination.innerText = "You made it!"
     const rank = getRank(path, shortestPath)
     subregion.innerText = `Number of countries passed through: ${path.length - 1}\n${getShareString(true)}`
-    if (rank === "perfect") {
-        travelFromHere.innerHTML = `Your rank is: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}${isRandomMode ? `` : `!`}</b>\nYou found the shortest possible path between ${nameWithThe(countryData[start].name.common)} and ${nameWithThe(countryData[finish].name.common)}. ${isRandomMode ? `` : `Congratulations, world traveler!`}`
+    if (rank === "direct route") {
+        travelFromHere.innerHTML = `Your rank is: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}${isRandomMode ? `` : `!`}</b>\nYou found the shortest path between ${nameWithThe(countryData[start].name.common)} and ${nameWithThe(countryData[finish].name.common)}. ${isRandomMode ? `` : `Congratulations!`}`
     } else if (rank === "speedy"){
-        travelFromHere.innerHTML = `Your rank is: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}</b>. Well done, but a faster path is possible!`
+        travelFromHere.innerHTML = `Your rank is: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}</b>. Well done, but there was a faster path!`
     } else {
         travelFromHere.innerHTML = `Your rank is: <br class="visible-on-narrow"><b>${speedSymbols[rank]}${rank}</b>. Better luck next time!`
     }
     bordersContainer.innerHTML = ""
     
-    if (rank !== "perfect") {
+    if (rank !== "direct route") {
         let tryAgain = document.createElement("div")
         tryAgain.innerText = "Try Again?"
         tryAgain.className = "share-button"
         tryAgain.onclick = () => {
             currentLocation = start
-            travelFromHere.innerText = "You can travel to:"
+            travelFromHere.innerText = "You can drive to:"
             path = []
             update()
         }
@@ -169,7 +169,7 @@ const success = () => {
         bordersContainer.appendChild(shareButton)
     }
 
-    if (rank === "perfect") {
+    if (rank === "direct route") {
         let randomMode = document.createElement("div")
         isRandomMode = true
         randomMode.innerText = "Random Mode"
