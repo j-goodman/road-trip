@@ -78,6 +78,9 @@ const update = () => {
     }
 
     youAreHere.innerText = `You're in ${nameWithThe(country.name.common)} ${country.flag}`
+    if (flagMode) {
+        youAreHere.innerText = `${country.flag}`
+    }
 
     let borders = country.borders
     bordersContainer.innerHTML = ""
@@ -97,6 +100,9 @@ const update = () => {
         if (countryData[code]) {
             let button = document.createElement("a")
             button.innerText = countryData[code].name.common + " " + countryData[code].flag
+            if (flagMode) {
+                button.innerText = countryData[code].flag
+            }
             bordersContainer.appendChild(button)
             button.onclick = () => {
                 path.push(currentLocation)
@@ -135,6 +141,7 @@ const update = () => {
 
 let path = []
 let isRandomMode = false
+let flagMode = false
 
 const success = () => {
     destination.innerText = "You made it!"
@@ -191,10 +198,13 @@ const success = () => {
 }
 
 let countryData = {}
+// const arrows = `⬅️↖️⬆️↗️➡️↘️⬇️↙️`
 
 const setDestination = (random) => {
     let daysSinceGameStarted = Math.floor(((Date.now()/1000/60/60) - 4)/24) - 19654
     // days since October 24, 2023
+
+    daysSinceGameStarted += 1
     let startIndex = daysSinceGameStarted % destinations.length
     let finishIndex = (daysSinceGameStarted + 1) % destinations.length
     if (random) {
