@@ -19,10 +19,10 @@ const subregion = document.querySelector("#subregion")
 const travelFromHere = document.querySelector("#travel-from-here")
 const bordersContainer = document.querySelector("#border-countries")
 const speedSymbols = {
-    'direct route': "🐆",
-    quick: "🐎",
-    tourist: "🐢",
-    snail: "🐌"
+    "direct route": "🐆",
+    "quick": "🐎",
+    "tourist": "🐢",
+    "snail": "🐌"
 }
 
 const getRank = (path, shortestPath) => {
@@ -117,7 +117,7 @@ const update = () => {
     
     let capitalString = ``
     if (!country.capital) {
-        capitalString = `it doesn't have an official capital.`
+        capitalString = `it has no official capital.`
     } else if (country.capital.length > 1) {
         let list = ""
         country.capital.forEach((city, index) => {
@@ -132,7 +132,28 @@ const update = () => {
         capitalString = `the capital is ${nameWithThe(country.capital[0])}${country.capital[0][country.capital[0].length - 1] === "." ? "" : "."}`
     }
 
-    extraInfo.innerText = `${useThe(country.name.official) ? "The " : ""}${country.name.official} is in ${country.subregion}. There are about ${approximateNumber(country.population)} ${country.demonyms.eng.f} people, and ${capitalString}`
+    let languageString = "The main "
+    let languageList = Object.keys(country.languages)
+    
+    if (languageList.length === 1) {
+        languageString += `language is `
+    } else {
+        languageString += `languages are `
+    }
+    
+    languageList.forEach((key, index) => {
+        if (languageList.length === 1) {
+            languageString += `${country.languages[key]}.`
+        } else if (index === languageList.length - 1) {
+            languageString += `and ${country.languages[key]}.`
+        } else if (languageList.length === 2) {
+            languageString += `${country.languages[key]} `
+        } else {
+            languageString += `${country.languages[key]}, `
+        }
+    })
+
+    extraInfo.innerText = `${useThe(country.name.official) ? "The " : ""}${country.name.official} is in ${country.subregion}. ${languageString} \n\n There are about ${approximateNumber(country.population)} ${country.demonyms.eng.f} people, and ${capitalString}`
     
     if (currentLocation === finish) {
         success()
@@ -146,7 +167,10 @@ let flagMode = false
 const success = () => {
     destination.innerText = "You made it!"
     const rank = getRank(path, shortestPath)
-    subregion.innerText = `Number of countries passed through: ${path.length - 1}\n${getShareString(true)}`
+    subregion.innerHTML = `Number of countries passed through: ${path.length - 1}\n`
+    let flags = document.createElement("span")
+    flags.innerText = getShareString(true)
+    subregion.appendChild(flags)
     if (rank === "direct route") {
         travelFromHere.innerHTML = `Your rank: <br class="visible-on-narrow"><b>${speedSymbols[rank]} ${rank}${isRandomMode ? `.` : `!`}</b>\nYou found the shortest path between ${nameWithThe(countryData[start].name.common)} and ${nameWithThe(countryData[finish].name.common)}. ${isRandomMode ? `` : `Congratulations!`}`
     } else if (rank === "quick"){
@@ -194,6 +218,13 @@ const success = () => {
         bordersContainer.appendChild(randomMode)
     }
 
+    let mapLink = document.createElement("a")
+    mapLink.href = countryData[finish].maps.googleMaps
+    console.log(mapLink.href)
+    mapLink.innerText = `Map 🗺`
+    mapLink.className = `share-button`
+    bordersContainer.appendChild(mapLink)
+
     bordersContainer.appendChild(buildMidnightTimer())
 }
 
@@ -204,7 +235,6 @@ const setDestination = (random) => {
     let daysSinceGameStarted = Math.floor(((Date.now()/1000/60/60) - 4)/24) - 19654
     // days since October 24, 2023
 
-    daysSinceGameStarted += 1
     let startIndex = daysSinceGameStarted % destinations.length
     let finishIndex = (daysSinceGameStarted + 1) % destinations.length
     if (random) {
