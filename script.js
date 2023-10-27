@@ -153,7 +153,7 @@ const update = () => {
         }
     })
 
-    extraInfo.innerText = `${useThe(country.name.official) ? "The " : ""}${country.name.official} is in ${country.subregion}. ${languageString} \n\n There are about ${approximateNumber(country.population)} ${country.demonyms.eng.f} people, and ${capitalString}`
+    extraInfo.innerText = `${useThe(country.name.official) ? "The " : ""}${country.name.official} is in ${country.subregion}. ${languageString} There are about ${approximateNumber(country.population)} ${country.demonyms.eng.f} people, and ${capitalString}`
     
     if (currentLocation === finish) {
         success()
@@ -223,7 +223,7 @@ const success = () => {
     console.log(mapLink.href)
     mapLink.innerText = `Map 🗺`
     mapLink.className = `share-button`
-    bordersContainer.appendChild(mapLink)
+    // bordersContainer.appendChild(mapLink)
 
     bordersContainer.appendChild(buildMidnightTimer())
 }
