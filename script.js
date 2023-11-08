@@ -250,12 +250,13 @@ const setDestination = (random) => {
     start = destinations[startIndex]
     finish = destinations[finishIndex]
 
+    getCountryByCode(finish, update)
+    getCountryByCode(currentLocation, update)
+
     findShortestPath(start, finish)
     currentLocation = start
 }
 
 let start, finish, currentLocation;
-getCountryByCode(finish)
-setDestination()
 
-getCountryByCode(currentLocation)
+setDestination()
