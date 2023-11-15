@@ -37,30 +37,32 @@ const getRank = (path, shortestPath) => {
     }
 }
 
-const getShareString = (plainText) => {
+const getShareString = (plainText, short) => {
     let shareString = ``
     shareString += `${countryData[start].flag}`
     shareString += speedSymbols[getRank(path, shortestPath)]
     shareString += `${emojiNumber((path.length - 1).toString().padStart(2, "0"))}`
     shareString += `${countryData[finish].flag}`
-    if (path.length - 1 <= 40) {
-        path.forEach((code, index) => {
-            if (index > 0) {
-                shareString += countryData[code].flag
-            }
-            if (index % 5 === 0 && index !== path.length - 1) {
-                shareString += plainText ? `\n` : `%0A`
-            }
-        })
-    } else {
-        shareString += plainText ? `\n` : `%0A`
-        shareString += `🐌🐌🐌🐌🐌`
+    if (!short) {
+        if (path.length - 1 <= 40) {
+            path.forEach((code, index) => {
+                if (index > 0) {
+                    shareString += countryData[code].flag
+                }
+                if (index % 5 === 0 && index !== path.length - 1) {
+                    shareString += plainText ? `\n` : `%0A`
+                }
+            })
+        } else {
+            shareString += plainText ? `\n` : `%0A`
+            shareString += `🐌🐌🐌🐌🐌`
+        }
     }
     return shareString.trim()
 }
 
 const shareResults = () => {
-    const shareString = getShareString(false)
+    const shareString = getShareString(false, true)
     console.log(shareString)
     window.open(`sms:&body=${shareString}`, `_self`);
     return false;
